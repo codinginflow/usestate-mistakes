@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { User } from "./page";
 
 export interface ProfileProps {
@@ -18,14 +18,19 @@ export interface ProfileProps {
 }
 
 export default function Profile({ user }: ProfileProps) {
+  return (
+    <UserProfile
+      user={user}
+      // ✅ Good: Changing the key will reset the whole component with all its state.
+      key={user.id}
+    />
+  );
+}
+
+// ✅ Good: Make the key an implementation detail by creating a sub-component that is not exported.
+function UserProfile({ user }: ProfileProps) {
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
-
-  // 🔴 Bad: Resetting state manually in useEffect. This is tedious and causes unnecessary re-renders.
-  useEffect(() => {
-    setTitle("");
-    setComment("");
-  }, [user.id]);
 
   console.count("UserProfile rendered");
 

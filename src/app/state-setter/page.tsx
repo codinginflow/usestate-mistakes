@@ -19,16 +19,18 @@ export default function Page() {
 
   const increment = () => {
     console.log("increment with count", count);
-    setCount(count + 1);
+    // ✅ Good: Use the functional form of the setter function to always get the latest state.
+    // ❗ This is not necessary for user events that simply update a state once.
+    setCount((prevCount) => prevCount + 1);
   };
 
   const incrementAsync = async () => {
-    console.log("incrementAsync with count", count);
+    console.log("incrementAsync with count", asyncCount);
 
     await performAsyncOperation(); // Simulates a network request or other async task
 
-    // 🔴 Wrong: This will result in a wrong count when clicked in quick succession because of the stale closure.
-    setAsyncCount(asyncCount + 1);
+    // ✅ Good: Use the functional form of the setter function to avoid stale closures.
+    setAsyncCount((prevCount) => prevCount + 1);
   };
 
   return (

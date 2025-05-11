@@ -15,14 +15,12 @@ import { getInitialData } from "./get-initial-data";
 export default function Page() {
   const [showDetails, setShowDetails] = useState(false);
 
-  // 🔴 Wrong: This will call the initializer function on every re-render.
+  // ✅ Good: The initializer function is only called once on initial render.
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [data, setData] = useState(getInitialData());
+  const [data, setData] = useState(getInitialData);
 
-  // 🔴 Calling the initializer function here is just as bad because it will be called on every re-render.
-  // const initialData = getInitialData();
-
-  // const [data, setData] = useState(initalData);
+  // ✅ Equivalent:
+  // const [data, setData] = useState(() => getInitialData());
 
   return (
     <div className="max-w-xl mx-auto p-4 space-y-8">

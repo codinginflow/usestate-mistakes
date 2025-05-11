@@ -10,18 +10,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { getInitials } from "./get-initials";
 
 export default function Page() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  // 🔴 Bad: Redundant state and unnecessary Effect.
-  const [fullName, setFullName] = useState("");
+  // ✅ Good: Calculate the full name during rendering.
+  const fullName = firstName + " " + lastName;
 
-  useEffect(() => {
-    setFullName(firstName + " " + lastName);
-  }, [firstName, lastName]);
+  // ✅ Also for function calls:
+  // ⚠️ Before React 19 Compiler, expensive operations should be wrapped in useMemo.
+  const initials = getInitials(firstName, lastName);
+
+  // ✅ Also for map, filter, etc.
+  const lastNameAnonymized = lastName
+    .split("")
+    .map((char, index) => (index < 2 ? char : "*"))
+    .join("");
 
   console.count("Page rendered");
 
@@ -73,6 +80,17 @@ export default function Page() {
           <div className="mt-6 space-y-4 text-center">
             <p className="text-lg font-semibold">
               Full Name: <span className="text-primary">{fullName}</span>
+            </p>
+
+            <p className="text-lg font-semibold">
+              Initials: <span className="text-primary">{initials}</span>
+            </p>
+
+            <p className="text-lg font-semibold">
+              Anonymized Name:{" "}
+              <span className="text-primary">
+                {firstName + " " + lastNameAnonymized}
+              </span>
             </p>
           </div>
         </CardContent>
