@@ -23,7 +23,7 @@ export default function Page() {
   };
 
   const incrementAsync = async () => {
-    console.log("incrementAsync with count", count);
+    console.log("incrementAsync with count", asyncCount);
 
     await performAsyncOperation(); // Simulates a network request or other async task
 
