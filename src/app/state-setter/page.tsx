@@ -62,7 +62,6 @@ export default function Page() {
             <Button onClick={increment}>+ 1</Button>
             <Button
               onClick={() => {
-                // 🔴 Wrong: This will only increment the count by 1 because React batches state updates in the same render.
                 increment();
                 increment();
                 increment();
